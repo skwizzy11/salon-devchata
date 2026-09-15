@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Девчата — студия маникюра и педикюра в Московском районе СПб</title>
+<meta name="description" content="Студия маникюра и педикюра на Ленинском, 168, кабинет 320. Ежедневно 10:00–22:00, прайс из 37 позиций с ценой и минутами, гарантия 10 дней.">
+<link rel="canonical" href="https://devchata.example/">
+<meta name="theme-color" content="#F4F1EC">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Девчата">
+<meta property="og:title" content="Девчата — студия маникюра и педикюра, Ленинский 168">
+<meta property="og:description" content="Ленинский 168, кабинет 320 в БЦ «Энергия». Ежедневно 10:00–22:00, 37 услуг с ценой и минутами, гарантия 10 дней.">
+<meta property="og:url" content="https://devchata.example/">
+<meta property="og:image" content="https://devchata.example/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" sizes="96x96">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
+
+<style>
+/* ───────────────────────────────────────────────────────────────────────────
+   Девчата — Ленинский 168, кабинет 320.
+   Жанр: приёмная карта / печатное расписание. Числа — каркас страницы.
+   Все цвета проверены замером контраста, не на глаз.
+   ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#F4F1EC;          /* тёплый белый: стены кабинета */
+  --ink:#2B2220;         /* чернила, тёплый тёмно-коричневый — 13,78:1 на bg */
+  --muted:#6B5A55;       /* приглушённый текст — 5,79:1 на bg */
+  --muted-hero:#5F4F4A;  /* подзаголовок героя: он лежит на фото, а не на bg.
+                            Замер по отрендеренному кадру: на тёмных участках
+                            снимка #6B5A55 давал 4,23:1 — ниже нормы. 5,04:1 */
+  --powder:#EADCD5;      /* пудра: фон секций, ink поверх 11,61:1 */
+  --powder-deep:#E3C6BB; /* пудра кресел */
+  --rose:#C4A0A6;        /* подушка-подлокотник */
+  --sage:#A1ABA1;        /* стена в шалфей — ТОЛЬКО декор, 2,1:1, текстом нельзя */
+  --oak:#C38D7B;
+  --accent:#CE3178;      /* фуксия DIKIDI #d83f83, затемнена до 4,84:1 с белым */
+  --accent-ink:#A32259;
+  --line:rgba(43,34,32,.14);
+  --line-soft:rgba(43,34,32,.08);
+
+  /* нижняя граница 2,25rem, а не 2,5: на 390px «Поддержим беседу» иначе
+     не влезает в строку и роняет «беседу» в сироту */
+  --fs-display:clamp(2.25rem,6.5vw,5rem);
+  --fs-head:clamp(1.65rem,3.2vw,2.5rem);
+  --fs-body:1.0625rem;
+  --fs-small:.875rem;
+
+  --pad:clamp(5rem,10vw,8rem);
+  --gut:clamp(1.25rem,4vw,3rem);
+  --head-h:68px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+@supports (interpolate-size:allow-keywords){:root{interpolate-size:allow-keywords}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+/* якоря не должны уезжать под фиксированную шапку */
+[id]{scroll-margin-top:calc(var(--head-h) + 1rem)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  font-size:var(--fs-body);line-height:1.6;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{margin:0;line-height:1.05;letter-spacing:-.025em;font-weight:700}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+.wrap{width:100%;max-width:1180px;margin-inline:auto;padding-inline:var(--gut)}
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:3px}
+/* на акцентной полосе чернильная обводка сливается с фоном — там своя */
+.cta-band :focus-visible,.btn-book:focus-visible{outline-color:#fff}
+
+.skip{position:absolute;left:var(--gut);top:-100px;z-index:100;background:var(--ink);
+      color:var(--bg);padding:.7rem 1.1rem;border-radius:6px;text-decoration:none}
+.skip:focus{top:12px}
+
+/* ── шапка ───────────────────────────────────────────────────────────────── */
+.head{position:fixed;inset:0 0 auto;height:var(--head-h);z-index:50;
+      display:flex;align-items:center;
+      background:transparent;border-bottom:1px solid transparent}
+.head-in{display:flex;align-items:center;gap:1.5rem;width:100%}
+.brand{display:flex;align-items:baseline;gap:.55rem;text-decoration:none;font-weight:800;
+       letter-spacing:-.03em;font-size:1.25rem;margin-right:auto;
+       min-height:44px;align-content:center;flex-wrap:wrap}
+.brand small{font-weight:500;font-size:.75rem;letter-spacing:0;color:var(--muted);
+             white-space:nowrap}
+.head.is-stuck .brand small{color:var(--muted)}
+.nav{display:flex;gap:1.4rem;font-size:var(--fs-small)}
+/* над героем шапка прозрачная и ссылки лежат на фото: приглушённый цвет
+   давал там 3,52:1 по замеру. Чернила дают 8,5:1 на фото и 13,78:1 на
+   плотной шапке */
+.nav a{text-decoration:none;color:var(--ink);padding:.5rem .1rem;
+       display:inline-flex;align-items:center;min-height:44px}
+.nav a:hover{color:var(--accent-ink)}
+.head-tel{font-size:var(--fs-small);font-weight:600;text-decoration:none;white-space:nowrap;
+          padding:.6rem .2rem;display:inline-flex;align-items:center;min-height:44px}
+.head.is-stuck{background:rgba(244,241,236,.93);border-bottom-color:var(--line);
+               backdrop-filter:saturate(1.1) blur(8px)}
+
+/* ── герой ───────────────────────────────────────────────────────────────── */
+.hero{position:relative;min-height:min(92vh,780px);display:flex;align-items:flex-end;
+      padding-top:var(--head-h);overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+            object-position:50% 58%;z-index:-2}
+/* их фото светлые и низкоконтрастные: тёмный скрим давал грязь — скрим светлый,
+   текст чернильный. Замерено: ink на самом светлом участке скрима 11,9:1 */
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(105deg,rgba(244,241,236,.95) 0%,rgba(244,241,236,.88) 38%,
+             rgba(244,241,236,.55) 64%,rgba(244,241,236,.18) 100%)}
+.hero-in{padding-block:clamp(2.5rem,7vw,5rem)}
+/* .wrap центрирует контейнер по сетке страницы — ограничиваем ДЕТЕЙ,
+   иначе max-width на самом .hero-in уводит заголовок в середину экрана */
+/* переносы расставлены вручную <br>, поэтому text-wrap:balance здесь не нужен —
+   он спорит с ними и даёт короткую строку-сироту */
+.hero h1{font-size:var(--fs-display);font-weight:800;line-height:.98;letter-spacing:-.035em;
+         max-width:18ch}
+.hero-sub{margin-top:1.4rem;max-width:46ch;color:var(--muted-hero);
+          font-size:clamp(1rem,1.6vw,1.1875rem)}
+.pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+.pill{border:1px solid var(--line);border-radius:100px;padding:.42rem .85rem;
+      font-size:var(--fs-small);color:var(--muted);background:rgba(255,255,255,.5)}
+.pill b{color:var(--ink);font-weight:600}
+.hero-acts{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+     min-height:52px;padding:.85rem 1.5rem;border-radius:8px;text-decoration:none;
+     font-weight:600;font-size:1rem;border:1px solid transparent;cursor:pointer}
+.btn-book{background:var(--accent);color:#fff}
+.btn-book:hover{background:var(--accent-ink)}
+.btn-tel{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-tel:hover{background:var(--ink);color:var(--bg)}
+.btn-tel .num{font-weight:700;letter-spacing:-.01em}
+
+@media (max-width:760px){
+  .hero::after{background:linear-gradient(178deg,
+    rgba(244,241,236,.94) 0%,rgba(244,241,236,.9) 46%,
+    rgba(244,241,236,.74) 72%,rgba(244,241,236,.34) 100%)}
+}
+
+/* ── секции ──────────────────────────────────────────────────────────────── */
+.sec{padding-block:var(--pad)}
+.sec-powder{background:var(--powder)}
+.sec-head{font-size:var(--fs-head);font-weight:700;max-width:22ch;text-wrap:balance}
+.sec-lede{margin-top:1rem;color:var(--muted);max-width:56ch}
+
+/* «кто мы» — крупно, много воздуха, асимметрия 7/5 */
+.intro{display:grid;grid-template-columns:7fr 5fr;gap:clamp(2rem,6vw,4.5rem);align-items:start}
+.intro-text{font-size:clamp(1.25rem,2.4vw,1.75rem);line-height:1.45;letter-spacing:-.02em;
+            max-width:24ch;font-weight:500}
+.intro-text em{font-style:normal;color:var(--muted)}
+.intro-side{max-width:38ch;color:var(--muted);padding-top:.5rem}
+.intro-side p + p{margin-top:1rem}
+
+/* ── мастера: ростер, а не карточки ──────────────────────────────────────── */
+.masters{margin-top:clamp(2.5rem,5vw,3.5rem);border-top:1px solid var(--line)}
+.master{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(1rem,3vw,2rem);
+        align-items:start;padding-block:clamp(1.5rem,3vw,2.25rem);
+        border-bottom:1px solid var(--line)}
+.m-photo{width:clamp(72px,9vw,104px);height:clamp(72px,9vw,104px);border-radius:8px;aspect-ratio:1;
+         object-fit:cover;background:var(--powder-deep)}
+.m-name{font-size:1.25rem;font-weight:700;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem}
+.m-post{font-size:var(--fs-small);font-weight:500;color:var(--muted);letter-spacing:0}
+.m-quote{margin-top:.6rem;color:var(--muted);max-width:60ch}
+.m-rail{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:.15rem;
+        min-width:6.5rem;padding-left:.5rem;border-left:1px solid var(--line-soft)}
+.m-rating{font-size:1.375rem;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.m-rating::before{content:"★";font-size:.7em;color:var(--oak);margin-right:.25em;
+                  vertical-align:.08em}
+.m-count{font-size:var(--fs-small);color:var(--muted);white-space:nowrap}
+
+/* ── full-bleed полоса с вынесенной цитатой ──────────────────────────────── */
+.band{position:relative;min-height:min(62vh,520px);display:flex;align-items:center;
+      overflow:hidden}
+.band-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+/* на снимке под цитатой есть очень светлые участки (белый стеллаж): прежний
+   скрим давал подписи 1,53:1 по замеру. Усилен слева, где лежит текст. */
+.band::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(95deg,rgba(43,34,32,.88) 0%,rgba(43,34,32,.78) 40%,
+             rgba(43,34,32,.46) 72%,rgba(43,34,32,.16) 100%)}
+.band-fig{margin:0}
+.band-q{color:#fff;max-width:20ch;font-size:clamp(1.5rem,4vw,2.75rem);font-weight:700;
+        line-height:1.12;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.band-q p{margin:0}
+.band-a{margin-top:1.1rem;color:rgba(255,255,255,.95);font-size:var(--fs-small)}
+
+/* ── работы ──────────────────────────────────────────────────────────────── */
+.works{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(.5rem,1.2vw,.875rem);
+       margin-top:clamp(2rem,4vw,3rem)}
+.works img{width:100%;height:100%;object-fit:cover;border-radius:6px;background:var(--powder-deep)}
+.works li:nth-child(1){grid-column:span 3;aspect-ratio:4/3}
+.works li:nth-child(2){grid-column:span 3;aspect-ratio:4/3}
+.works li:nth-child(3),.works li:nth-child(4),.works li:nth-child(5){grid-column:span 2;aspect-ratio:1}
+.works-note{margin-top:1.25rem;color:var(--muted);font-size:var(--fs-small)}
+.works-note a{color:var(--ink)}
+
+/* ── прайс ───────────────────────────────────────────────────────────────── */
+.price-wrap{margin-top:clamp(2rem,4vw,3rem);border-top:1px solid var(--line)}
+.price-group{border-bottom:1px solid var(--line)}
+.price-head{display:flex;align-items:center;gap:.9rem;padding-block:1.15rem;cursor:pointer;
+            list-style:none;font-weight:600;font-size:1.125rem;min-height:56px}
+.price-head::-webkit-details-marker{display:none}
+.price-head-name{margin-right:auto}
+.price-head-count{font-size:var(--fs-small);color:var(--muted);font-weight:500}
+.chev{flex:none;color:var(--muted)}
+.price-group[open] .chev{transform:rotate(180deg)}
+.price-list{padding-bottom:1rem}
+.price-row{display:grid;grid-template-columns:1fr auto auto;gap:1rem;align-items:baseline;
+           padding-block:.6rem;border-top:1px solid var(--line-soft)}
+.price-row:first-child{border-top:0}
+.price-name{min-width:0}
+.price-note{display:block;font-size:var(--fs-small);color:var(--muted);margin-top:.15rem;
+            max-width:52ch}
+.price-min{color:var(--muted);font-size:var(--fs-small);white-space:nowrap;
+           min-width:4.75rem;text-align:right}
+.price-sum{font-weight:600;white-space:nowrap;min-width:6rem;text-align:right}
+.price-from{font-weight:500;color:var(--muted);font-size:var(--fs-small)}
+.unit{font-weight:500;color:var(--muted)}
+.price-foot{margin-top:1.5rem;color:var(--muted);font-size:var(--fs-small);max-width:60ch}
+
+/* ── отзывы ──────────────────────────────────────────────────────────────── */
+.revs{margin-top:clamp(2rem,4vw,3rem);columns:2;column-gap:clamp(1.5rem,4vw,3rem)}
+.rev{break-inside:avoid;margin-bottom:clamp(1.5rem,3vw,2.25rem);
+     padding:1.5rem;background:var(--bg);border-radius:10px;border:1px solid var(--line-soft)}
+.rev blockquote{margin:0;quotes:"«" "»"}
+.rev blockquote p::before{content:open-quote}
+.rev blockquote p::after{content:close-quote}
+.rev-meta{margin-top:.9rem;font-size:var(--fs-small);color:var(--muted);
+          display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline}
+.rev-name{color:var(--ink);font-weight:600}
+.rev-stars{color:var(--oak);letter-spacing:.08em}
+.revs-note{margin-top:.5rem;color:var(--muted);font-size:var(--fs-small);max-width:62ch}
+
+/* ── практика ────────────────────────────────────────────────────────────── */
+.facts{display:grid;grid-template-columns:8fr 4fr;gap:clamp(2rem,5vw,4rem);align-items:start;
+       margin-top:clamp(2rem,4vw,3rem)}
+.dl{border-top:1px solid var(--line)}
+.dl-row{display:grid;grid-template-columns:8.5rem 1fr;gap:1rem;padding-block:1rem;
+        border-bottom:1px solid var(--line)}
+.dl-row dt{color:var(--muted);font-size:var(--fs-small);padding-top:.15rem}
+.dl-row dd{margin:0}
+.dl-row dd a{font-weight:600}
+.dl-row strong{font-weight:600}
+.hours{font-weight:600}
+.hours span{color:var(--muted);font-weight:500;font-size:var(--fs-small)}
+.map{width:100%;aspect-ratio:3/4;border:1px solid var(--line);border-radius:10px;
+     background:var(--powder-deep)}
+@media (max-width:760px){.map{aspect-ratio:4/3}}
+
+/* ── финальный CTA ───────────────────────────────────────────────────────── */
+.cta-band{background:var(--ink);color:var(--bg);padding-block:clamp(3.5rem,8vw,6rem)}
+.cta-in{display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:space-between}
+.cta-tel{display:inline-block;text-decoration:none;color:#fff;font-weight:800;
+         letter-spacing:-.04em;font-size:clamp(2.5rem,8vw,4.25rem);line-height:1.1;
+         padding-block:.15em}
+.cta-tel:hover{color:var(--powder-deep)}
+.cta-note{margin-top:.9rem;color:rgba(244,241,236,.72);font-size:var(--fs-small);max-width:34ch}
+.cta-band .btn-book{background:var(--accent);color:#fff}
+.cta-band .btn-book:hover{background:#fff;color:var(--accent-ink)}
+
+/* ── подвал ──────────────────────────────────────────────────────────────── */
+.foot{padding-block:2.5rem;font-size:var(--fs-small);color:var(--muted)}
+.foot p{margin-bottom:.4rem}
+.foot a{color:var(--ink)}
+
+/* ── движение ────────────────────────────────────────────────────────────
+   Четыре приёма, каждый несёт смысл. Всё остальное отклонено — список
+   отклонённого в README. Анимируем только transform и opacity.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* 1. Раскрытие групп прайса — смена состояния, её надо показать.
+      Через ::details-content: без JS, где не поддержано — открывается разом. */
+.price-group::details-content{
+  block-size:0;opacity:0;overflow:hidden;
+  transition:content-visibility .24s allow-discrete,opacity .2s var(--ease),
+             block-size .24s var(--ease);
+}
+.price-group[open]::details-content{block-size:auto;opacity:1}
+.chev{transition:transform .2s var(--ease)}
+
+/* 2. Отклик кнопок на нажатие */
+.btn,.cta-tel{transition:transform .14s ease-out,background-color .18s ease,color .18s ease}
+.btn:active,.cta-tel:active{transform:scale(.98)}
+
+/* 3. Состояние шапки — смена фона, не «all» */
+.head{transition:background-color .2s ease,border-color .2s ease}
+
+/* 4. Появление секций: fade + 8px, стаггер 60 мс.
+      Прячем ТОЛЬКО когда .reveal-on выставлен скриптом после успешной
+      инициализации наблюдателя — иначе сбой оставил бы пол-страницы пустой. */
+.reveal-on [data-reveal-item]{
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease);
+}
+.reveal-on [data-reveal-item].is-in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .reveal-on [data-reveal-item]{opacity:1;transform:none}
+}
+
+/* На печать страница уходит целиком: до срабатывания наблюдателя секции
+   скрыты, и без этого сброса PDF вышел бы с пустыми полосами. */
+@media print{
+  .reveal-on [data-reveal-item]{opacity:1!important;transform:none!important}
+  .head{position:static}
+  .price-group::details-content{block-size:auto;opacity:1;overflow:visible}
+}
+
+/* ── адаптив ─────────────────────────────────────────────────────────────── */
+@media (max-width:900px){
+  .intro,.facts{grid-template-columns:1fr}
+  .revs{columns:1}
+  .nav{display:none}
+}
+@media (max-width:900px){
+  /* ниже 900px навигации нет, поэтому фиксированная шапка только съедала бы
+     высоту экрана: делаем её обычной и возвращаем телефон */
+  .head{position:static;background:var(--bg);border-bottom-color:var(--line)}
+  .hero{padding-top:0}
+  .head-tel{display:inline-flex}
+}
+@media (max-width:620px){
+  /* на 320px подпись у логотипа и телефон вместе не помещались — подпись уходит,
+     телефон остаётся: он важнее */
+  .brand small{display:none}
+  .head-in{gap:.75rem}
+  .master{grid-template-columns:auto 1fr;row-gap:.9rem}
+  .m-rail{grid-column:1/-1;flex-direction:row;align-items:baseline;gap:.6rem;
+          border-left:0;padding-left:0;justify-content:flex-start}
+  .m-rating{font-size:1.125rem}
+  .price-row{grid-template-columns:1fr auto;row-gap:.2rem}
+  .price-min{grid-column:1;text-align:left;min-width:0}
+  .price-sum{grid-row:1;grid-column:2}
+  .works{grid-template-columns:repeat(4,1fr)}
+  .works li:nth-child(1),.works li:nth-child(2){grid-column:span 4;aspect-ratio:3/2}
+  .works li:nth-child(3),.works li:nth-child(4){grid-column:span 2}
+  .works li:nth-child(5){grid-column:span 4;aspect-ratio:3/2}
+  .dl-row{grid-template-columns:1fr;gap:.2rem}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">К содержанию</a>
+
+<header class="head" id="head">
+  <div class="wrap head-in">
+    <a class="brand" href="#top">Девчата<small>студия маникюра и педикюра</small></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#masters">Мастера</a>
+      <a href="#price">Прайс</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a class="head-tel" href="tel:+79627119120">+7 962 711-91-20</a>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ── герой ─────────────────────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <img class="hero-img" src="img/hero-kabinet.jpg" alt="Кабинет студии «Девчата»: рабочие места мастеров, пудрово-розовые кресла, стеллаж с лаками и тёплый дубовый пол" width="1024" height="1024" fetchpriority="high" decoding="async">
+  <div class="wrap hero-in">
+    <h1>Поддержим беседу<br>или помолчим.</h1>
+    <p class="hero-sub">Студия маникюра и педикюра на Ленинском, 168. Ежедневно с&nbsp;10:00 до&nbsp;22:00, кабинет&nbsp;320 в&nbsp;БЦ «Энергия».</p>
+    <ul class="pills">
+      <li class="pill"><b>4,89</b> · 353 оценки на DIKIDI</li>
+      <li class="pill"><b>5,0</b> · 168 отзывов на Яндекс.Картах</li>
+      <li class="pill">Ежедневно <b>10:00–22:00</b></li>
+      <li class="pill"><b>7 минут</b> от «Московской»</li>
+    </ul>
+    <div class="hero-acts">
+      <a class="btn btn-book" href="https://dikidi.ru/devchata" target="_blank" rel="noopener">Записаться онлайн</a>
+      <a class="btn btn-tel" href="tel:+79627119120">Позвонить <span class="num">+7 962 711-91-20</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── кто мы ────────────────────────────────────────────────────────────── -->
+<section class="sec">
+  <div class="wrap intro" data-reveal>
+    <p class="intro-text" data-reveal-item>Мы не гонимся за трендом на скорость, а работаем на качество и&nbsp;комфорт. <em>Отпустим только довольной результатом.</em></p>
+    <div class="intro-side" data-reveal-item>
+      <p>Предложим вкусный кофе, включим любимый сериал. Инструменты проходят три этапа стерилизации, материалы сертифицированные.</p>
+      <p>Если за десять дней после визита появится трещина или отслойка — отремонтируем бесплатно. При первом визите на услуги с гель-лаком скидка 300&nbsp;₽, кроме комплексов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── мастера ───────────────────────────────────────────────────────────── -->
+<section class="sec sec-powder" id="masters">
+  <div class="wrap" data-reveal>
+    <h2 class="sec-head" data-reveal-item>Пять мастеров, и у каждой свой счёт отзывов</h2>
+    <p class="sec-lede" data-reveal-item>Рейтинги и число отзывов — из карточек мастеров на DIKIDI. Тексты о себе они написали сами.</p>
+    <ul class="masters" data-reveal-item>
+<li class="master">
+  <img class="m-photo" src="img/master-anastasia.jpg" alt="Анастасия, мастер студии «Девчата»" width="160" height="160" loading="lazy" decoding="async">
+  <div class="m-text">
+    <h3 class="m-name">Анастасия<span class="m-post">Мастер</span></h3>
+    <p class="m-quote">Маникюр я делаю нежно и очень внимательно подхожу к каждой детали. Особое внимание я уделяю бережному, нежному маникюру без порезов.</p>
+  </div>
+  <div class="m-rail"><span class="vh">Рейтинг: 4,96 из 5, отзывов: 92.</span><span class="m-rating" aria-hidden="true">4,96</span><span class="m-count" aria-hidden="true">92 отз.</span></div>
+</li>
+<li class="master">
+  <img class="m-photo" src="img/master-angelina.jpg" alt="Ангелина, мастер студии «Девчата»" width="160" height="160" loading="lazy" decoding="async">
+  <div class="m-text">
+    <h3 class="m-name">Ангелина<span class="m-post">Ведущий мастер</span></h3>
+    <p class="m-quote">Я ооочень люблю интересные дизайны от руки и френч. Мой маникюр — это не только красота, но и здоровье Ваших ногтей.</p>
+  </div>
+  <div class="m-rail"><span class="vh">Рейтинг: 4,92 из 5, отзывов: 51.</span><span class="m-rating" aria-hidden="true">4,92</span><span class="m-count" aria-hidden="true">51 отз.</span></div>
+</li>
+<li class="master">
+  <img class="m-photo" src="img/master-anzhelika.jpg" alt="Анжелика, мастер студии «Девчата»" width="160" height="160" loading="lazy" decoding="async">
+  <div class="m-text">
+    <h3 class="m-name">Анжелика<span class="m-post">Мастер</span></h3>
+    <p class="m-quote">Я сертифицированный подолог и мастер ногтевого сервиса со стажем работы более 4 лет. В работе на первом месте для меня здоровье Ваших ногтей и кожи.</p>
+  </div>
+  <div class="m-rail"><span class="vh">Рейтинг: 5,00 из 5, отзывов: 49.</span><span class="m-rating" aria-hidden="true">5,00</span><span class="m-count" aria-hidden="true">49 отз.</span></div>
+</li>
+<li class="master">
+  <img class="m-photo" src="img/master-anna.jpg" alt="Анна, мастер студии «Девчата»" width="160" height="160" loading="lazy" decoding="async">
+  <div class="m-text">
+    <h3 class="m-name">Анна<span class="m-post">Мастер</span></h3>
+    <p class="m-quote">Я очень люблю делать красивый маникюр, а ещё моя фишка это стемпинг и красивый френч.</p>
+  </div>
+  <div class="m-rail"><span class="vh">Рейтинг: 4,85 из 5, отзывов: 38.</span><span class="m-rating" aria-hidden="true">4,85</span><span class="m-count" aria-hidden="true">38 отз.</span></div>
+</li>
+<li class="master">
+  <img class="m-photo" src="img/master-evgenia.jpg" alt="Евгения, мастер студии «Девчата»" width="160" height="160" loading="lazy" decoding="async">
+  <div class="m-text">
+    <h3 class="m-name">Евгения<span class="m-post">Ведущий мастер</span></h3>
+    <p class="m-quote">Обожаю создавать красоту на Ваших ногтях. Каждый маникюр выполняется мной аккуратно и с душой.</p>
+  </div>
+  <div class="m-rail"><span class="vh">Рейтинг: 4,81 из 5, отзывов: 50.</span><span class="m-rating" aria-hidden="true">4,81</span><span class="m-count" aria-hidden="true">50 отз.</span></div>
+</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── полоса с цитатой ──────────────────────────────────────────────────── -->
+<section class="band">
+  <img class="band-img" src="img/band-kabinet.jpg" alt="Зона ожидания в студии «Девчата»: диван, зеркала и сухоцветы" width="1280" height="720" loading="lazy" decoding="async">
+  <div class="wrap">
+    <figure class="band-fig">
+      <blockquote class="band-q"><p>Довольный гость&nbsp;= счастливые мы.</p></blockquote>
+      <figcaption class="band-a">Принцип студии, её собственная формулировка</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ── работы ────────────────────────────────────────────────────────────── -->
+<section class="sec">
+  <div class="wrap" data-reveal>
+    <h2 class="sec-head" data-reveal-item>Две трети портфолио — нюд, молочный и пудровый френч</h2>
+    <p class="sec-lede" data-reveal-item>Портфолио собрано владелицей — 37 работ. Ниже пять из них.</p>
+    <ul class="works" data-reveal-item>
+      <li><img src="img/work-01.jpg" alt="Маникюр в молочном нюде на миндалевидной форме" width="800" height="600" loading="lazy" decoding="async"></li>
+      <li><img src="img/work-02.jpg" alt="Градиент от молочного к розовому на овальной форме" width="800" height="600" loading="lazy" decoding="async"></li>
+      <li><img src="img/work-03.jpg" alt="Пудровый френч на короткой длине" width="600" height="600" loading="lazy" decoding="async"></li>
+      <li><img src="img/work-04.jpg" alt="Покрытие гель-лаком глубокого красного оттенка" width="600" height="600" loading="lazy" decoding="async"></li>
+      <li><img src="img/work-05.jpg" alt="Педикюр с красным покрытием гель-лаком" width="600" height="600" loading="lazy" decoding="async"></li>
+    </ul>
+    <p class="works-note">Все 37 работ — <a href="https://dikidi.ru/devchata" target="_blank" rel="noopener">в профиле студии на DIKIDI</a>.</p>
+  </div>
+</section>
+
+<!-- ── прайс ─────────────────────────────────────────────────────────────── -->
+<section class="sec sec-powder" id="price">
+  <div class="wrap" data-reveal>
+    <h2 class="sec-head" data-reveal-item>Весь прайс целиком: 37 позиций, с ценой и минутами</h2>
+    <p class="sec-lede" data-reveal-item>Без «от» там, где цена фиксированная. Минуты — то время, которое реально закладывает мастер, поэтому запись не наезжает на следующую.</p>
+    <div class="price-wrap" data-reveal-item>
+<details class="price-group" open>
+<summary class="price-head">
+  <span class="price-head-name">Маникюр</span>
+  <span class="price-head-count">7</span>
+  <svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5.5 7 9.5 11 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</summary>
+<div class="price-body"><ul class="price-list">
+<li class="price-row"><span class="price-name">Маникюр мужской</span><span class="price-min"><span class="vh">Длительность: </span>45<span class="unit"> мин</span></span><span class="price-sum">1 350<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Маникюр без покрытия</span><span class="price-min"><span class="vh">Длительность: </span>30<span class="unit"> мин</span></span><span class="price-sum">1 150<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Маникюр +  покрытие гель-лак (+ укрепление до средней длины)</span><span class="price-min"><span class="vh">Длительность: </span>70<span class="unit"> мин</span></span><span class="price-sum">2 290<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Маникюр + покрытие лак<span class="price-note">Маникюр с покрытием обычным лаком</span></span><span class="price-min"><span class="vh">Длительность: </span>75<span class="unit"> мин</span></span><span class="price-sum"><span class="price-from">от</span> 1 600<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Японский маникюр</span><span class="price-min"><span class="vh">Длительность: </span>50<span class="unit"> мин</span></span><span class="price-sum"><span class="price-from">от</span> 1 650<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Снятие покрытия другой студии</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum">500<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Маникюр +  покрытие гель-лак (+ укрепление- длинные ногти)</span><span class="price-min"><span class="vh">Длительность: </span>70<span class="unit"> мин</span></span><span class="price-sum">2 690<span class="unit"> ₽</span></span></li>
+</ul></div>
+</details>
+<details class="price-group">
+<summary class="price-head">
+  <span class="price-head-name">Педикюр</span>
+  <span class="price-head-count">10</span>
+  <svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5.5 7 9.5 11 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</summary>
+<div class="price-body"><ul class="price-list">
+<li class="price-row"><span class="price-name">Педикюр только пальчики+ обычный лак<span class="price-note">Педикюр пальчиков, с покрытием обычный лак Снятие гель-лака в стоимость не входит</span></span><span class="price-min"><span class="vh">Длительность: </span>75<span class="unit"> мин</span></span><span class="price-sum">2 250<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Педикюр без покрытия (с обработкой стопы и пальцев )</span><span class="price-min"><span class="vh">Длительность: </span>40<span class="unit"> мин</span></span><span class="price-sum">2 200<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Педикюр без покрытия (только пальчики)<span class="price-note">Снятие оплачивается отдельно (300 руб.). Необходимо указать в комментарии</span></span><span class="price-min"><span class="vh">Длительность: </span>40<span class="unit"> мин</span></span><span class="price-sum">1 600<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Педикюр только пальчики+ гель-лак<span class="price-note">Снятие включено в стоимость</span></span><span class="price-min"><span class="vh">Длительность: </span>60<span class="unit"> мин</span></span><span class="price-sum">2 300<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Педикюр + обычный лак<span class="price-note">Снятие гель-лака в стоимость не входит</span></span><span class="price-min"><span class="vh">Длительность: </span>80<span class="unit"> мин</span></span><span class="price-sum">2 500<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Педикюр + гель-лак<span class="price-note">Снятие включено в стоимость Обработка стоп производится в колпачковой технике</span></span><span class="price-min"><span class="vh">Длительность: </span>60<span class="unit"> мин</span></span><span class="price-sum">2 800<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">SMART педикюр + гель-лак</span><span class="price-min"><span class="vh">Длительность: </span>80<span class="unit"> мин</span></span><span class="price-sum">2 800<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Smart педикюр+пленки на все пальцы</span><span class="price-min"><span class="vh">Длительность: </span>120<span class="unit"> мин</span></span><span class="price-sum">3 800<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Пленки на 1 палец<span class="price-note">Обратите внимание: Услуга не является самостоятельной! Идет только как дополните к услуге педикюр</span></span><span class="price-min"><span class="vh">Длительность: </span>10<span class="unit"> мин</span></span><span class="price-sum">300<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Педикюр обработка только стопы<span class="price-note">В стоимость включена обработка только стопы</span></span><span class="price-min"><span class="vh">Длительность: </span>30<span class="unit"> мин</span></span><span class="price-sum">1 200<span class="unit"> ₽</span></span></li>
+</ul></div>
+</details>
+<details class="price-group">
+<summary class="price-head">
+  <span class="price-head-name">Дизайн ногтей</span>
+  <span class="price-head-count">11</span>
+  <svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5.5 7 9.5 11 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</summary>
+<div class="price-body"><ul class="price-list">
+<li class="price-row"><span class="price-name">Френч, лунки (все ногти)</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum">400<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн «растяжка блестками» все ногти</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum">400<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн всех ногтей- втирка</span><span class="price-min"><span class="vh">Длительность: </span>10<span class="unit"> мин</span></span><span class="price-sum">350<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн ногтей за 1 ноготь (легкий)</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum"><span class="price-from">от</span> 100<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн ногтей (сложный) за 1 ноготь Обговаривается заранее</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum"><span class="price-from">от</span> 200<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Слайд дизайн, стемпинг (1ноготь)</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum">100<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн (все пальцы) Легкий</span><span class="price-min"><span class="vh">Длительность: </span>35<span class="unit"> мин</span></span><span class="price-sum">500<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Простой дизайн ( матовый топ, молочный топ, топ с эффектом, покрытие кошачий глаз) за все пальцы<span class="price-note">Простой дизайн ( матовый топ, молочный топ, топ с эффектом, покрытие кошачий глаз) за все пальцы</span></span><span class="price-min"><span class="vh">Длительность: </span>20<span class="unit"> мин</span></span><span class="price-sum">200<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн стемпинг на все ногти</span><span class="price-min"><span class="vh">Длительность: </span>30<span class="unit"> мин</span></span><span class="price-sum">500<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн средний на все пальцы</span><span class="price-min"><span class="vh">Длительность: </span>60<span class="unit"> мин</span></span><span class="price-sum"><span class="price-from">от</span> 800<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Дизайн (средний) за 1 ноготь</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum"><span class="price-from">от</span> 150<span class="unit"> ₽</span></span></li>
+</ul></div>
+</details>
+<details class="price-group">
+<summary class="price-head">
+  <span class="price-head-name">Наращивание ногтей</span>
+  <span class="price-head-count">3</span>
+  <svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5.5 7 9.5 11 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</summary>
+<div class="price-body"><ul class="price-list">
+<li class="price-row"><span class="price-name">Снятие наращенных ногтей без последующего покрытия<span class="price-note">В стоимость входит только снятие наращенных ногтей. Маникюр в стоимость НЕ входит</span></span><span class="price-min"><span class="vh">Длительность: </span>30<span class="unit"> мин</span></span><span class="price-sum">800<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Наращивание ногтей до 3ки<span class="price-note">Необходимо прислать фото исходного состояния ногтей</span></span><span class="price-min"><span class="vh">Длительность: </span>210<span class="unit"> мин</span></span><span class="price-sum">3 750<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Снятие наращенных ногтей перед покрытием</span><span class="price-min"><span class="vh">Длительность: </span>15<span class="unit"> мин</span></span><span class="price-sum">600<span class="unit"> ₽</span></span></li>
+</ul></div>
+</details>
+<details class="price-group">
+<summary class="price-head">
+  <span class="price-head-name">Ремонт и архитектура</span>
+  <span class="price-head-count">4</span>
+  <svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5.5 7 9.5 11 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</summary>
+<div class="price-body"><ul class="price-list">
+<li class="price-row"><span class="price-name">Поднятие 1 клюющего ногтя<span class="price-note">Обратите внимание: Услуга не является самостоятельной. Идет только в комплексе с услугой маникюр+покрытие</span></span><span class="price-min"><span class="vh">Длительность: </span>10<span class="unit"> мин</span></span><span class="price-sum">150<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Коррекция архитектуры ногтей гелем до 3ки (все ногти)</span><span class="price-min"><span class="vh">Длительность: </span>60<span class="unit"> мин</span></span><span class="price-sum">1 000<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Коррекция архитектуры ногтей гелем от 3ки (Экстра длина) (все ногти)</span><span class="price-min"><span class="vh">Длительность: </span>90<span class="unit"> мин</span></span><span class="price-sum">2 000<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Достраивание уголков на всех ногтях</span><span class="price-min"><span class="vh">Длительность: </span>30<span class="unit"> мин</span></span><span class="price-sum">1 000<span class="unit"> ₽</span></span></li>
+</ul></div>
+</details>
+<details class="price-group">
+<summary class="price-head">
+  <span class="price-head-name">Комплексы</span>
+  <span class="price-head-count">2</span>
+  <svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5.5 7 9.5 11 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</summary>
+<div class="price-body"><ul class="price-list">
+<li class="price-row"><span class="price-name">Комплекс: Комбинированный педикюр с покрытием г/л с обработкой стопы+маникюр (с покрытием гель лак)</span><span class="price-min"><span class="vh">Длительность: </span>165<span class="unit"> мин</span></span><span class="price-sum">4 750<span class="unit"> ₽</span></span></li>
+<li class="price-row"><span class="price-name">Комплекс: Smart педикюр с покрытием+маникюр с покрытием<span class="price-note">Комплекс маникюр+педикюр по выгодной цене!</span></span><span class="price-min"><span class="vh">Длительность: </span>210<span class="unit"> мин</span></span><span class="price-sum">4 750<span class="unit"> ₽</span></span></li>
+</ul></div>
+</details>
+    </div>
+    <p class="price-foot">Цены и длительность синхронизированы с профилем студии на DIKIDI. «От» стоит только там, где итог зависит от длины ногтей или сложности дизайна.</p>
+  </div>
+</section>
+
+<!-- ── отзывы ────────────────────────────────────────────────────────────── -->
+<section class="sec" id="reviews">
+  <div class="wrap" data-reveal>
+    <h2 class="sec-head" data-reveal-item>Что пишут после визита</h2>
+    <p class="sec-lede" data-reveal-item>Дословно, с именами и датами. 4,89 из 5 по 353 оценкам на DIKIDI, 5,0 по 168 отзывам на Яндекс.Картах.</p>
+    <div class="revs" data-reveal-item>
+
+      <article class="rev">
+        <blockquote><p>все прекрасно, сделала денежный нюд 😄 студия очень симпатичная: все в одном стиле, приятное кино сопровождение и вкусный кофе. Но самое главное очень качественный маникюр, мастер сделала все очень аккуратно и красиво</p></blockquote>
+        <p class="rev-meta"><span class="rev-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</span>
+          <span class="rev-name">Soda Cherry Pop</span>
+          <span>28 августа 2026 · мастер Ангелина · DIKIDI</span></p>
+      </article>
+
+      <article class="rev">
+        <blockquote><p>Все супер. Мария милейший мастер, добрейший человек. Отличное укрепление, аккуратная форма, грамотный маникюр. На фото ногтям неделя, кутикула идеальная</p></blockquote>
+        <p class="rev-meta"><span class="rev-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</span>
+          <span class="rev-name">Кристина</span>
+          <span>10 июня 2026 · DIKIDI</span></p>
+      </article>
+
+      <article class="rev">
+        <blockquote><p>У Ангелины была впервые, и конечно переживала за качество маникюра, так как цвет выбрала довольно яркий… покрытие выполнено очень качественно, под кутикулу, как я люблю, ноготки обработаны идеально, и очень красивый дизайн получился!</p></blockquote>
+        <p class="rev-meta"><span class="rev-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</span>
+          <span class="rev-name">Ирина</span>
+          <span>22 июня 2026 · мастер Ангелина · DIKIDI</span></p>
+      </article>
+
+      <article class="rev">
+        <blockquote><p>Мастер деликатно и красиво сделала педикюр. Комфорт, быстро и красиво, все пожелания были учтены! Советую локальную студию и профессионального мастера!</p></blockquote>
+        <p class="rev-meta"><span class="rev-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</span>
+          <span class="rev-name">Дарья Рябчикова</span>
+          <span>30 июня 2026 · мастер Анжелика · DIKIDI</span></p>
+      </article>
+
+      <article class="rev">
+        <blockquote><p>Потрясающее место! Скажу по секрету: лучше многих московских. Мастер Анна сделала очень аккуратный, нежный, красивый, действительно ИДЕАЛЬНЫЙ маникюр меньше, чем за час 😍 Кофе, конфетки, вежливый администратор — всё на высшем уровне</p></blockquote>
+        <p class="rev-meta"><span class="rev-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</span>
+          <span class="rev-name">Александра Ж.</span>
+          <span>27 июня 2026 · Яндекс.Карты</span></p>
+      </article>
+
+    </div>
+    <p class="revs-note">Из 353 оценок на DIKIDI: 340 пятёрок, 8 четвёрок, 4 тройки и одна двойка. Отрицательный отзыв студия отработала — предложила переделать работу.</p>
+  </div>
+</section>
+
+<!-- ── практика ──────────────────────────────────────────────────────────── -->
+<section class="sec sec-powder" id="contacts">
+  <div class="wrap" data-reveal>
+    <h2 class="sec-head" data-reveal-item>Как дойти и когда прийти</h2>
+    <div class="facts" data-reveal-item>
+      <dl class="dl">
+        <div class="dl-row"><dt>Адрес</dt>
+          <dd><a href="https://yandex.ru/maps/?pt=30.310963,59.853591&amp;z=17&amp;l=map" target="_blank" rel="noopener">Ленинский проспект, 168</a><br>
+              <strong>Бизнес-центр «Энергия», офис 320</strong><br>
+              Московский район, Санкт-Петербург</dd></div>
+        <div class="dl-row"><dt>Метро</dt>
+          <dd>«Московская» — 7 минут пешком</dd></div>
+        <div class="dl-row"><dt>Часы</dt>
+          <dd class="hours">Ежедневно 10:00–22:00<br><span>без перерывов и выходных</span></dd></div>
+        <div class="dl-row"><dt>Телефон</dt>
+          <dd><a href="tel:+79627119120">+7 962 711-91-20</a></dd></div>
+        <div class="dl-row"><dt>Запись</dt>
+          <dd><a href="https://dikidi.ru/devchata" target="_blank" rel="noopener">Онлайн через DIKIDI</a> — видно свободные окна каждого мастера</dd></div>
+        <div class="dl-row"><dt>Соцсети</dt>
+          <dd><a href="https://vk.com/devchata_studio" target="_blank" rel="noopener">ВКонтакте</a> · <a href="https://t.me/devchata_studio" target="_blank" rel="noopener">Telegram</a></dd></div>
+      </dl>
+      <iframe class="map" src="https://yandex.ru/map-widget/v1/?ll=30.310963%2C59.853591&amp;z=17&amp;pt=30.310963,59.853591,pm2rdm" title="Студия «Девчата» на карте: Ленинский проспект, 168" loading="lazy" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ── финальный CTA ───────────────────────────────────────────────────────── -->
+<section class="cta-band">
+  <div class="wrap cta-in">
+    <div>
+      <a class="cta-tel" href="tel:+79627119120">+7 962 711-91-20</a>
+      <p class="cta-note">Ежедневно с 10:00 до 22:00. Или запишитесь сами — выберите мастера и свободное окно.</p>
+    </div>
+    <a class="btn btn-book" href="https://dikidi.ru/devchata" target="_blank" rel="noopener">Записаться онлайн</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong>Студия маникюра и педикюра «Девчата»</strong> — Санкт-Петербург, Ленинский проспект, 168, БЦ «Энергия», офис 320.</p>
+    <p>Ежедневно 10:00–22:00 · <a href="tel:+79627119120">+7 962 711-91-20</a> · <a href="https://vk.com/devchata_studio" target="_blank" rel="noopener">ВКонтакте</a> · <a href="https://t.me/devchata_studio" target="_blank" rel="noopener">Telegram</a></p>
+    <p>Цены, рейтинги и портфолио — из профиля студии на <a href="https://dikidi.ru/devchata" target="_blank" rel="noopener">DIKIDI</a>. Не оферта.</p>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NailSalon",
+  "additionalType": "https://schema.org/HealthAndBeautyBusiness",
+  "name": "Девчата",
+  "description": "Студия маникюра и педикюра в Московском районе Санкт-Петербурга. Ленинский проспект, 168, БЦ «Энергия», офис 320. Ежедневно 10:00–22:00.",
+  "url": "https://devchata.example/",
+  "telephone": "+79627119120",
+  "image": "https://devchata.example/og.jpg",
+  "priceRange": "100–4750 ₽",
+  "currenciesAccepted": "RUB",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Ленинский проспект, 168, офис 320",
+    "addressLocality": "Санкт-Петербург",
+    "addressRegion": "Санкт-Петербург",
+    "addressCountry": "RU"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 59.853591,
+    "longitude": 30.310963
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "10:00",
+      "closes": "22:00"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": 4.89,
+    "ratingCount": 353,
+    "reviewCount": 94,
+    "bestRating": 5,
+    "worstRating": 1
+  },
+  "sameAs": [
+    "https://vk.com/devchata_studio",
+    "https://t.me/devchata_studio",
+    "https://dikidi.ru/devchata"
+  ],
+  "hasMap": "https://yandex.ru/maps/?pt=30.310963,59.853591&z=17&l=map",
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://dikidi.ru/devchata",
+      "inLanguage": "ru-RU",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ]
+    },
+    "result": {
+      "@type": "Reservation",
+      "name": "Запись в студию «Девчата»"
+    }
+  },
+  "employee": [
+    {
+      "@type": "Person",
+      "name": "Анастасия",
+      "jobTitle": "Мастер",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.96,
+        "reviewCount": 92,
+        "bestRating": 5,
+        "worstRating": 1
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Ангелина",
+      "jobTitle": "Ведущий мастер",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.92,
+        "reviewCount": 51,
+        "bestRating": 5,
+        "worstRating": 1
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Анжелика",
+      "jobTitle": "Мастер",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 5.0,
+        "reviewCount": 49,
+        "bestRating": 5,
+        "worstRating": 1
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Анна",
+      "jobTitle": "Мастер",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.85,
+        "reviewCount": 38,
+        "bestRating": 5,
+        "worstRating": 1
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Евгения",
+      "jobTitle": "Ведущий мастер",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.81,
+        "reviewCount": 50,
+        "bestRating": 5,
+        "worstRating": 1
+      }
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Услуги студии «Девчата»",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Снятие наращенных ногтей без последующего покрытия"
+        },
+        "price": "800",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 30,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Маникюр мужской"
+        },
+        "price": "1350",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 45,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Маникюр без покрытия"
+        },
+        "price": "1150",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 30,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Маникюр +  покрытие гель-лак (+ укрепление до средней длины)"
+        },
+        "price": "2290",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 70,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр только пальчики+ обычный лак"
+        },
+        "price": "2250",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 75,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр без покрытия (с обработкой стопы и пальцев )"
+        },
+        "price": "2200",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 40,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр без покрытия (только пальчики)"
+        },
+        "price": "1600",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 40,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр только пальчики+ гель-лак"
+        },
+        "price": "2300",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 60,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр + обычный лак"
+        },
+        "price": "2500",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 80,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Френч, лунки (все ногти)"
+        },
+        "price": "400",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн «растяжка блестками» все ногти"
+        },
+        "price": "400",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн всех ногтей- втирка"
+        },
+        "price": "350",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 10,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн ногтей за 1 ноготь (легкий)"
+        },
+        "price": "100",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн ногтей (сложный) за 1 ноготь Обговаривается заранее"
+        },
+        "price": "200",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Слайд дизайн, стемпинг (1ноготь)"
+        },
+        "price": "100",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Маникюр + покрытие лак"
+        },
+        "price": "1600",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 75,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Наращивание ногтей до 3ки"
+        },
+        "price": "3750",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 210,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр + гель-лак"
+        },
+        "price": "2800",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 60,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "SMART педикюр + гель-лак"
+        },
+        "price": "2800",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 80,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Комплекс: Комбинированный педикюр с покрытием г/л с обработкой стопы+маникюр (с покрытием гель лак)"
+        },
+        "price": "4750",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 165,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Снятие наращенных ногтей перед покрытием"
+        },
+        "price": "600",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн (все пальцы) Легкий"
+        },
+        "price": "500",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 35,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Простой дизайн ( матовый топ, молочный топ, топ с эффектом, покрытие кошачий глаз) за все пальцы"
+        },
+        "price": "200",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 20,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн стемпинг на все ногти"
+        },
+        "price": "500",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 30,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Комплекс: Smart педикюр с покрытием+маникюр с покрытием"
+        },
+        "price": "4750",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 210,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Smart педикюр+пленки на все пальцы"
+        },
+        "price": "3800",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 120,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Пленки на 1 палец"
+        },
+        "price": "300",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 10,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Педикюр обработка только стопы"
+        },
+        "price": "1200",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 30,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн средний на все пальцы"
+        },
+        "price": "800",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 60,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Дизайн (средний) за 1 ноготь"
+        },
+        "price": "150",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Поднятие 1 клюющего ногтя"
+        },
+        "price": "150",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 10,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Коррекция архитектуры ногтей гелем до 3ки (все ногти)"
+        },
+        "price": "1000",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 60,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Японский маникюр"
+        },
+        "price": "1650",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 50,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Коррекция архитектуры ногтей гелем от 3ки (Экстра длина) (все ногти)"
+        },
+        "price": "2000",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 90,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Достраивание уголков на всех ногтях"
+        },
+        "price": "1000",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 30,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Снятие покрытия другой студии"
+        },
+        "price": "500",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 15,
+          "unitCode": "MIN"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Маникюр +  покрытие гель-лак (+ укрепление- длинные ногти)"
+        },
+        "price": "2690",
+        "priceCurrency": "RUB",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "value": 70,
+          "unitCode": "MIN"
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<script>
+/* Появление секций вешаем ПЕРВЫМ и отдельно.
+   Три уровня защиты от «пол-страницы невидимо навсегда»:
+   1) класс .reveal-on, который прячет элементы, ставится только ПОСЛЕ того,
+      как наблюдатель создан и запущен, — не в <head>;
+   2) всё, что уже в кадре на момент запуска, показывается сразу, синхронно.
+      Иначе заход по якорю (#price) оставил бы пустой экран до срабатывания
+      наблюдателя;
+   3) если за 3 с не раскрылось ничего — страховка показывает страницу целиком.
+   Любое исключение на любом шаге тоже показывает всё. */
+(function(){
+  var root=document.documentElement, items=[];
+  function showAll(){
+    try{ for(var i=0;i<items.length;i++) items[i].classList.add('is-in'); }catch(e){}
+    root.classList.remove('reveal-on');
+  }
+  try{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if(!('IntersectionObserver' in window)) return;
+    items=[].slice.call(document.querySelectorAll('[data-reveal-item]'));
+    var groups=[].slice.call(document.querySelectorAll('[data-reveal]'));
+    if(!items.length || !groups.length) return;
+
+    var revealed=0;
+    function show(group, stagger){
+      var kids=group.querySelectorAll('[data-reveal-item]');
+      for(var i=0;i<kids.length;i++){
+        if(stagger) kids[i].style.transitionDelay=(i*60)+'ms';
+        kids[i].classList.add('is-in');
+        revealed++;
+      }
+    }
+
+    var io=new IntersectionObserver(function(entries){
+      try{
+        entries.forEach(function(en){
+          if(!en.isIntersecting) return;
+          show(en.target, true);
+          io.unobserve(en.target);
+        });
+      }catch(err){ showAll(); }
+    },{rootMargin:'0px 0px -10% 0px',threshold:.01});
+
+    root.classList.add('reveal-on');
+
+    var vh=window.innerHeight||root.clientHeight;
+    groups.forEach(function(g){
+      var r=g.getBoundingClientRect();
+      if(r.top<vh && r.bottom>0){ show(g,false); }   // уже в кадре — без задержки
+      else { io.observe(g); }
+    });
+
+    setTimeout(function(){ if(revealed===0) showAll(); },3000);
+  }catch(e){ showAll(); }
+})();
+
+/* Состояние шапки. Отдельный блок: падение здесь не трогает появление секций. */
+(function(){
+  try{
+    var head=document.getElementById('head');
+    if(!head) return;
+    var onScroll=function(){
+      head.classList.toggle('is-stuck', window.scrollY>24);
+    };
+    onScroll();
+    window.addEventListener('scroll',onScroll,{passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

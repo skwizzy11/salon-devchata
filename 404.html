@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Страница не найдена — Девчата</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" sizes="96x96">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{--bg:#F4F1EC;--ink:#2B2220;--muted:#6B5A55;--accent:#CE3178;--accent-ink:#A32259;
+      --line:rgba(43,34,32,.14)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+     font-family:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+     font-size:1.0625rem;line-height:1.6;font-variant-numeric:tabular-nums;
+     display:flex;align-items:center;-webkit-font-smoothing:antialiased}
+.wrap{width:100%;max-width:640px;margin-inline:auto;padding:3rem clamp(1.25rem,5vw,2rem)}
+h1{margin:0;font-size:clamp(2rem,7vw,3.25rem);font-weight:800;line-height:1;
+   letter-spacing:-.035em}
+p{margin:1.1rem 0 0;color:var(--muted);max-width:46ch}
+.acts{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;
+     padding:.85rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;
+     border:1px solid transparent;transition:transform .14s ease-out,background-color .18s ease,color .18s ease}
+.btn:active{transform:scale(.98)}
+.btn-main{background:var(--accent);color:#fff}
+.btn-main:hover{background:var(--accent-ink)}
+.btn-alt{border-color:var(--ink);color:var(--ink)}
+.btn-alt:hover{background:var(--ink);color:var(--bg)}
+.meta{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--line);
+      font-size:.875rem;color:var(--muted)}
+.meta a{color:var(--ink)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:3px}
+.btn-main:focus-visible{outline-color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Такой страницы нет.</h1>
+  <p>Адрес набран с ошибкой или страницу убрали. Студия на месте — кабинет 320 работает
+     ежедневно с 10:00 до 22:00.</p>
+  <div class="acts">
+    <a class="btn btn-main" href="/">На главную</a>
+    <a class="btn btn-alt" href="tel:+79627119120">+7 962 711-91-20</a>
+  </div>
+  <p class="meta">Студия маникюра и педикюра «Девчата» — Санкт-Петербург, Ленинский проспект, 168,
+     БЦ «Энергия», офис 320. <a href="https://dikidi.ru/devchata" rel="noopener">Запись онлайн</a>.</p>
+</main>
+</body>
+</html>
